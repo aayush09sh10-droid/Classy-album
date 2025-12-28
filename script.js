@@ -127,30 +127,47 @@ box_2.appendChild(img_2);
   }, 1000);
 
 }
-const create = document.querySelector(".create_select");
+function createpopup() {
+  if (document.querySelector(".center_section")) return;
 
-function upload() {
-  create.addEventListener("click", (e) => {
-    e.preventDefault();
+  const centerSection = document.createElement("div");
+  centerSection.className = "center_section";
 
-    // if (document.querySelector(".center_section")) return;
+  const popup = document.createElement("div");
+  popup.className = "popup";
 
-    const centerSection = document.createElement("div");
-    centerSection.className = "center_section";
+  const star = document.createElement("div");
+  star.className = "star";
 
-    const create_album = document.createElement("div");
-    create_album.className = "popup";
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "Delete";
+  deleteBtn.className = "delete_btn";
 
-    const create_album_div = document.createElement("div");
-    create_album_div.className="star";
-    
-
-    create_album.appendChild(create_album_div);
-    centerSection.appendChild(create_album);
-
-    const main_body1 = document.querySelector(".main_body");
-    main_body1.appendChild(centerSection);
+  deleteBtn.addEventListener("click", () => {
+    centerSection.remove();
+    localStorage.removeItem("popupCreated");
   });
+
+  popup.appendChild(star);
+  popup.appendChild(deleteBtn);
+  centerSection.appendChild(popup);
+
+  const main_body1 = document.querySelector(".main_body");
+  main_body1.appendChild(centerSection);
 }
 
-upload();
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("popupCreated") === "true") {
+    createpopup();
+  }
+});
+
+
+const create = document.querySelector(".create_select");
+
+create.addEventListener("click", (e) => {
+  e.preventDefault();
+  createpopup();
+  localStorage.setItem("popupCreated", "true");
+});
